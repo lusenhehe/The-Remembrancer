@@ -3,22 +3,36 @@ extends Node
 
 @export var world: World
 @export var ecs_fps := 60.0
+@export var unlimited_fps := false
 var _accum := 0.0
 var ecs_tick_rate := 1.0 / ecs_fps
 
 func _process(delta):
-	_accum += delta
-	
-	if _accum < ecs_tick_rate:
+	if unlimited_fps:
+		ECS.process(delta)
 		return
-	
-	ECS.process(_accum)
-	_accum = 0.0
+	else:
+		_accum += delta
+		
+		if _accum < ecs_tick_rate:
+			return
+		
+		ECS.process(_accum)
+		_accum = 0.0
 
 func _ready():
 	ecs_tick_rate = 1.0 / ecs_fps
 	# 绑定世界
-	ECS.world = world
-	# 创建实体并添加组件
-	var entity = Player.new()
+	ECS.world = world 
+
+	# 注册系统（输入 -> 移动）并确保 setup 执行
+	ECS.world.add_system(InputSystem.new())
+	ECS.world.add_system(MovementSystem.new())
+	ECS.world.add_system(RenderSystem.new())
+	ECS.world.finalize_system_setup()
+
+	# 使用 Player.tscn 预设实例化玩家并添加到世界
+	var player_scene = preload("res://scene/entities/Player.tscn")
+	var entity = player_scene.instantiate()
 	ECS.world.add_entity(entity)
+  
