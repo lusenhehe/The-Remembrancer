@@ -1,0 +1,23 @@
+# Godot
+.import/
+.export/
+.export_presets.cfg
+.godot/
+*.import
+.vscode/
+.github/
+addons/
+*.txt
+# Android build
+android/
+docs/
+release/
+# Binary
+*.apk
+*.aar
+*.so
+*.uid
+# 临时文件
+*.tmp
+*.log
+*.uid

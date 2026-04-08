@@ -1,0 +1,37 @@
+[gd_resource type="InventoryDatabase" format=3 uid="uid://dtnio3lf01oec"]
+
+[ext_resource type="Texture2D" uid="uid://e25shmqriiuc" path="res://assets/ui/icons/icon_items.png" id="1_4j16g"]
+[ext_resource type="Texture2D" uid="uid://bmpsauihsbkd2" path="res://assets/ui/icons/icon_matericals.png" id="2_c3kpi"]
+[ext_resource type="Texture2D" uid="uid://c57apsxo8hp0j" path="res://assets/ui/icons/icon_equipment.png" id="3_6pmw7"]
+
+[sub_resource type="ItemCategory" id="ItemCategory_3uv57"]
+name = "Items"
+color = Color(0.95000005, 1, 0, 1)
+icon = ExtResource("1_4j16g")
+
+[sub_resource type="ItemCategory" id="ItemCategory_j0rby"]
+name = "Matericals"
+color = Color(0, 0.6152344, 0.984375, 1)
+icon = ExtResource("2_c3kpi")
+
+[sub_resource type="ItemCategory" id="ItemCategory_hschu"]
+name = "Equipment"
+color = Color(1, 0, 0.7124996, 1)
+icon = ExtResource("3_6pmw7")
+item_properties = {
+"": ""
+}
+
+[sub_resource type="ItemDefinition" id="ItemDefinition_3uv57"]
+max_stack = 1
+name = "木剑"
+size = Vector2i(1, 2)
+properties = {
+"": ""
+}
+categories = Array[ItemCategory]([SubResource("ItemCategory_hschu")])
+description = "简易的木剑"
+
+[resource]
+items = Array[ItemDefinition]([SubResource("ItemDefinition_3uv57")])
+item_categories = Array[ItemCategory]([SubResource("ItemCategory_3uv57"), SubResource("ItemCategory_j0rby"), SubResource("ItemCategory_hschu")])

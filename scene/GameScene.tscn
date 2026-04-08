@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://3m4fv7smmwpy"]
+
+[ext_resource type="Script" uid="uid://c1sikilbhep0x" path="res://src/main.gd" id="1_v1xgs"]
+[ext_resource type="Script" uid="uid://cdu5tlyk72uu4" path="res://addons/gecs/ecs/world.gd" id="1_v6y0l"]
+[ext_resource type="Script" uid="uid://dsf1vsps8yqsa" path="res://common/system/s_health.gd" id="7_oe5on"]
+
+[node name="GameScene" type="Node2D" unique_id=458339855 node_paths=PackedStringArray("world")]
+script = ExtResource("1_v1xgs")
+world = NodePath("EcsWorld")
+metadata/_edit_horizontal_guides_ = [-260.0]
+
+[node name="EcsWorld" type="Node" parent="." unique_id=781268363]
+script = ExtResource("1_v6y0l")
+entity_nodes_root = NodePath("../Entities")
+system_nodes_root = NodePath("../Systems")
+metadata/_custom_type_script = "uid://cdu5tlyk72uu4"
+
+[node name="Entities" type="Node" parent="." unique_id=723526981]
+
+[node name="Systems" type="Node" parent="." unique_id=1797827002]
+
+[node name="HealthSystem" type="Node" parent="Systems" unique_id=175134444]
+script = ExtResource("7_oe5on")
