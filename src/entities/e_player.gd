@@ -1,15 +1,38 @@
-## PlayerSystem.gd
-## 玩家实体类，继承自 Entity 基类
-class_name Player
+class_name PlayerEntity
 extends Entity
 
-# 定义该实体拥有的组件
+@export var characterbody: CharacterBody2D
+@export var speed: float = 200.0
+@export var hurtbox: Area2D
+@export var cam: Camera2D
+
 func define_components() -> Array:
-	return [C_Health.new(100), C_Velocity.new()]
+	return [
+		C_PhysicsBody.new(),
+		C_Velocity.new(),
+		C_Input.new(),
+		C_Health.new()
+	]
+ 
+func on_ready() -> void:
+	# 配置速度
+	var c_velocity = get_component(C_Velocity) as C_Velocity
+	if c_velocity:
+		c_velocity.speed = speed
+
+	# 绑定 CharacterBody2D 到物理组件
+	var c_phys = get_component(C_PhysicsBody) as C_PhysicsBody
+	c_phys.body = characterbody
+	if hurtbox.is_connected("body_entered", Callable(self, "_on_hurtbox_body_entered")):
+		hurtbox.connect("body_entered", Callable(self, "_on_hurtbox_body_entered"))
+
+	# 初始化健康值（调试用）
+	var hp = get_component(C_Health) as C_Health
+	if hp and hp.current <= 0:
+		hp.current = hp.maximum
 
 
-func on_ready(): 
-	# 只有场景根节点是 Node3D/Node2D 时才能使用坐标、变换等空间属性
-	var c_vel = get_component(C_Velocity) as C_Velocity
-	if c_vel:
-		c_vel.direction = Vector2.RIGHT 
+func _on_hurtbox_body_entered(_body: Node) -> void:
+	var hp = get_component(C_Health) as C_Health
+	if hp:
+		hp.current -= 10.0

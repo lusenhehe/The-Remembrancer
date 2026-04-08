@@ -2,11 +2,15 @@ class_name MovementSystem
 extends System
 
 func query() -> QueryBuilder:
-    return q.with_all([C_Transform, C_Velocity]).iterate([C_Transform, C_Velocity])
+	return q.with_all([C_PhysicsBody, C_Velocity, C_Input]).iterate([C_PhysicsBody, C_Velocity, C_Input])
 
-func process(entities: Array[Entity], components: Array, delta: float) -> void:
-    var transforms = components[0]
-    var velocities = components[1]
-    for i in range(transforms.size()):
-        transforms[i].position += velocities[i].direction * velocities[i].speed * delta
- 
+func process(entities: Array[Entity], components: Array, _delta: float) -> void:
+	var bodies = components[0]
+	var velocities = components[1]
+	var inputs = components[2]
+	for i in range(entities.size()):
+		var body = bodies[i].body
+		var inp = inputs[i]
+		var dir = Vector2(int(inp.right) - int(inp.left), int(inp.down) - int(inp.up)).normalized()
+		body.velocity = dir * velocities[i].speed
+		body.move_and_slide()
