@@ -5,3 +5,6 @@ extends Component
 @export var down: bool = false
 @export var left: bool = false
 @export var right: bool = false
+
+@export var ui_inventory_visible: bool = false
+@export var cast_fireball: bool = false

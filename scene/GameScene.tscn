@@ -2,16 +2,64 @@
 
 [ext_resource type="Script" uid="uid://c1sikilbhep0x" path="res://src/main.gd" id="1_v1xgs"]
 [ext_resource type="Script" uid="uid://cdu5tlyk72uu4" path="res://addons/gecs/ecs/world.gd" id="1_v6y0l"]
+[ext_resource type="PackedScene" uid="uid://c644y56dlx687" path="res://scene/entities/Player.tscn" id="3_p43ja"]
+[ext_resource type="Script" uid="uid://b6k13gc2m4e5s" path="res://addons/gecs/ecs/component.gd" id="4_oe5on"]
 [ext_resource type="Texture2D" uid="uid://bmpsauihsbkd2" path="res://assets/ui/icons/icon_matericals.png" id="4_v1xgs"]
-[ext_resource type="Script" uid="uid://dsf1vsps8yqsa" path="res://common/system/s_health.gd" id="7_oe5on"]
+[ext_resource type="Script" uid="uid://vx66fjusrfiv" path="res://common/component/physics/c_physics_body.gd" id="5_k20u6"]
+[ext_resource type="Script" uid="uid://bwu11mq1kq4k1" path="res://common/component/physics/c_velocity.gd" id="6_m2qwr"]
+[ext_resource type="PackedScene" uid="uid://1dijqt6vr078" path="res://addons/inventory-system-demos/ui/grid/grid_inventory_panel.tscn" id="6_p43ja"]
+[ext_resource type="Script" uid="uid://c01q730pm1mfq" path="res://common/component/gameplay/c_input.gd" id="7_dsrfk"]
+[ext_resource type="Script" uid="uid://cx0ovqv731qs2" path="res://common/component/gameplay/c_health.gd" id="8_0ui6f"]
+[ext_resource type="Script" uid="uid://dx63gjick4ph8" path="res://common/component/inventory/c_inventorycommandqueue.gd" id="10_eociw"]
+[ext_resource type="Script" uid="uid://cdigh1hbl1xyq" path="res://common/component/inventory/c_inventory.gd" id="10_qpv0u"]
+[ext_resource type="PackedScene" uid="uid://bt53ugodp5ppn" path="res://scene/entities/TrainingDummy.tscn" id="11_vdvei"]
+[ext_resource type="Script" uid="uid://yk1uvf5l785g" path="res://common/component/gameplay/c_damage_receiver.gd" id="12_m2qwr"]
+[ext_resource type="Script" uid="uid://k4a6avjb07jn" path="res://common/component/gameplay/c_view.gd" id="13_dsrfk"]
+[ext_resource type="Texture2D" uid="uid://e25shmqriiuc" path="res://assets/ui/icons/icon_items.png" id="15_dsrfk"]
+[ext_resource type="InventoryDatabase" uid="uid://de5qy8ycey7yn" path="res://assets/data/database.tres" id="16_0ui6f"]
+
+[sub_resource type="Resource" id="Resource_w6bb2"]
+script = ExtResource("5_k20u6")
+metadata/_custom_type_script = "uid://vx66fjusrfiv"
+
+[sub_resource type="Resource" id="Resource_opfyp"]
+script = ExtResource("6_m2qwr")
+metadata/_custom_type_script = "uid://bwu11mq1kq4k1"
+
+[sub_resource type="Resource" id="Resource_c8cb6"]
+script = ExtResource("7_dsrfk")
+metadata/_custom_type_script = "uid://c01q730pm1mfq"
+
+[sub_resource type="Resource" id="Resource_2xi0w"]
+script = ExtResource("8_0ui6f")
+metadata/_custom_type_script = "uid://cx0ovqv731qs2"
+
+[sub_resource type="Resource" id="Resource_som6n"]
+script = ExtResource("10_eociw")
+metadata/_custom_type_script = "uid://dx63gjick4ph8"
+
+[sub_resource type="Resource" id="Resource_vdvei"]
+script = ExtResource("10_qpv0u")
+metadata/_custom_type_script = "uid://cdigh1hbl1xyq"
+
+[sub_resource type="Resource" id="Resource_0ui6f"]
+script = ExtResource("8_0ui6f")
+metadata/_custom_type_script = "uid://cx0ovqv731qs2"
+
+[sub_resource type="Resource" id="Resource_7oumm"]
+script = ExtResource("12_m2qwr")
+
+[sub_resource type="Resource" id="Resource_eociw"]
+script = ExtResource("13_dsrfk")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4j7jg"]
-radius = 27.0
 
-[node name="GameScene" type="Node2D" unique_id=458339855 node_paths=PackedStringArray("world")]
+[node name="GameScene" type="Node2D" unique_id=458339855 node_paths=PackedStringArray("world", "player", "training_dummy")]
 script = ExtResource("1_v1xgs")
 world = NodePath("ECS/EcsWorld")
 unlimited_fps = true
+player = NodePath("ECS/Entities/Player")
+training_dummy = NodePath("ECS/Entities/TrainingDummy")
 metadata/_edit_horizontal_guides_ = [-260.0]
 
 [node name="ECS" type="Node" parent="." unique_id=125232074]
@@ -24,10 +72,17 @@ metadata/_custom_type_script = "uid://cdu5tlyk72uu4"
 
 [node name="Entities" type="Node" parent="ECS" unique_id=723526981]
 
-[node name="Systems" type="Node" parent="ECS" unique_id=1797827002]
+[node name="Player" parent="ECS/Entities" unique_id=1707397081 node_paths=PackedStringArray("inventory_panel") instance=ExtResource("3_p43ja")]
+inventory_panel = NodePath("../../../UI_Canvas/PlayerInventoryWindow")
+component_resources = Array[ExtResource("4_oe5on")]([SubResource("Resource_w6bb2"), SubResource("Resource_opfyp"), SubResource("Resource_c8cb6"), SubResource("Resource_2xi0w"), SubResource("Resource_som6n"), SubResource("Resource_vdvei")])
 
-[node name="HealthSystem" type="Node" parent="ECS/Systems" unique_id=175134444]
-script = ExtResource("7_oe5on")
+[node name="TrainingDummy" parent="ECS/Entities" unique_id=132617846 instance=ExtResource("11_vdvei")]
+component_resources = Array[ExtResource("4_oe5on")]([SubResource("Resource_0ui6f"), SubResource("Resource_7oumm"), SubResource("Resource_eociw")])
+
+[node name="Sprite2D" parent="ECS/Entities/TrainingDummy" index="0" unique_id=570061563]
+position = Vector2(103, -63.999996)
+
+[node name="Systems" type="Node" parent="ECS" unique_id=1797827002]
 
 [node name="MapNode" type="Node" parent="." unique_id=992566276]
 
@@ -40,6 +95,19 @@ texture = ExtResource("4_v1xgs")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapNode/Area2D" unique_id=1330149797]
 shape = SubResource("CircleShape2D_4j7jg")
 
+[node name="Chest" type="StaticBody2D" parent="MapNode" unique_id=1920123700]
+position = Vector2(279, 39)
+
+[node name="Sprite2D" type="Sprite2D" parent="MapNode/Chest" unique_id=1298633009]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("15_dsrfk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapNode/Chest" unique_id=738797749]
+shape = SubResource("CircleShape2D_4j7jg")
+
+[node name="GridInventory" type="GridInventory" parent="MapNode/Chest" unique_id=2045016366]
+database = ExtResource("16_0ui6f")
+
 [node name="Area2D2" type="StaticBody2D" parent="MapNode" unique_id=59733625]
 position = Vector2(65, 158)
 
@@ -48,3 +116,18 @@ texture = ExtResource("4_v1xgs")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapNode/Area2D2" unique_id=837250251]
 shape = SubResource("CircleShape2D_4j7jg")
+
+[node name="UI_Canvas" type="CanvasLayer" parent="." unique_id=1999990001]
+
+[node name="PlayerInventoryWindow" parent="UI_Canvas" unique_id=670407577 node_paths=PackedStringArray("inventory") instance=ExtResource("6_p43ja")]
+unique_name_in_owner = true
+visible = false
+inventory = NodePath("../../ECS/Entities/Player/GridInventory")
+
+[node name="BoxInventory" parent="UI_Canvas" unique_id=2030933356 node_paths=PackedStringArray("inventory") instance=ExtResource("6_p43ja")]
+unique_name_in_owner = true
+visible = false
+inventory = NodePath("../../ECS/Entities/Player/GridInventory")
+
+[editable path="ECS/Entities/Player"]
+[editable path="ECS/Entities/TrainingDummy"]

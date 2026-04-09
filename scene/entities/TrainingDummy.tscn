@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bt53ugodp5ppn"]
+
+[ext_resource type="Script" uid="uid://das7t10beot11" path="res://src/entities/training_dummy.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://c57apsxo8hp0j" path="res://assets/ui/icons/icon_equipment.png" id="2_o5art"]
+
+[node name="TrainingDummy" type="Node" unique_id=2006725964]
+script = ExtResource("1")
+metadata/_custom_type_script = "uid://das7t10beot11"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=570061563]
+position = Vector2(126.99999, 52.999996)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_o5art")

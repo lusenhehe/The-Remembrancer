@@ -4,10 +4,15 @@ extends Node
 @export var world: World
 @export var ecs_fps := 60.0
 @export var unlimited_fps := false
+@export var player: PlayerEntity
+@export var training_dummy: TrainingDummy
 var _accum := 0.0
 var ecs_tick_rate := 1.0 / ecs_fps
 
 func _process(delta):
+	if Input.is_action_just_released("attack"):
+		_send_attack()
+
 	if unlimited_fps:
 		ECS.process(delta)
 		return
@@ -24,19 +29,45 @@ func _ready():
 	ecs_tick_rate = 1.0 / ecs_fps
 	# 绑定世界
 	ECS.world = world 
-	# 设置系统和实体
 	setup_systems()
 	setup_entities()
 
 func setup_systems():
-	# 注册系统（输入 -> 移动）并确保 setup 执行
+	# 注册系统（攻击反馈 -> 伤害处理 -> 血量检查 -> 其他）
+	ECS.world.add_system(HitFeedbackSystem.new())
+	ECS.world.add_system(DamageSystem.new())
 	ECS.world.add_system(InputSystem.new())
+	ECS.world.add_system(HealthSystem.new())
 	ECS.world.add_system(MovementSystem.new())
 	ECS.world.add_system(RenderSystem.new())
-	ECS.world.finalize_system_setup()
-func setup_entities():
-	# 使用 Player.tscn 预设实例化玩家并添加到世界
-	var player_scene = preload("res://scene/entities/Player.tscn")
-	var entity = player_scene.instantiate()
-	ECS.world.add_entity(entity)
-  
+	ECS.world.add_system(InventoryCommandSystem.new())
+
+	ECS.world.finalize_system_setup() 
+
+func setup_entities(): 
+	setup_inventory(player)
+
+func setup_inventory(_player):
+	# 测试加物品
+	var queue = _player.get_component(C_InventoryCommandQueue)
+	var cmd = AddItemCommand.new()
+	cmd.item_id = "wood"
+	cmd.amount = 3 
+
+	queue.commands.append(cmd)
+	var new_cmd = AddItemCommand.new() 
+	new_cmd.item_id = "helmet_labor"
+	new_cmd.amount = 3
+
+	queue.commands.append(new_cmd)
+
+func _send_attack() -> void:
+	var dmg = C_Damage.new()
+	dmg.amount = 10.0
+	dmg.source = player
+	training_dummy.add_component(dmg)
+
+	var current_health = training_dummy.get_component(C_Health) as C_Health
+	if current_health:
+		print("Dummy HP:", current_health.current)
+ 
