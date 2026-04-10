@@ -3,6 +3,5 @@ extends InventoryCommand
 
 var item_id: String = ""
 
-func execute(entity: Entity) -> void:
-    var inv: C_Inventory = entity.get_component(C_Inventory)
-    inv.inventory_panel.visible = not inv.inventory_panel.visible
+func execute(c_inventory: C_Inventory) -> void:
+	c_inventory.inventory_panel.visible = not c_inventory.inventory_panel.visible

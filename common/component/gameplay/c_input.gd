@@ -6,5 +6,6 @@ extends Component
 @export var left: bool = false
 @export var right: bool = false
 
+@export var interact: bool = false
 @export var ui_inventory_visible: bool = false
-@export var cast_fireball: bool = false
+@export var ui_open_chest_visible: bool = false

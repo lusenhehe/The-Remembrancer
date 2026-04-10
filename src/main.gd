@@ -6,6 +6,8 @@ extends Node
 @export var unlimited_fps := false
 @export var player: PlayerEntity
 @export var training_dummy: TrainingDummy
+
+@export var chests : Array[ChestEntity]
 var _accum := 0.0
 var ecs_tick_rate := 1.0 / ecs_fps
 
@@ -41,13 +43,14 @@ func setup_systems():
 	ECS.world.add_system(MovementSystem.new())
 	ECS.world.add_system(RenderSystem.new())
 	ECS.world.add_system(InventoryCommandSystem.new())
-
+	ECS.world.add_system(InteractionSystem.new())
+	ECS.world.add_system(ChestUISystem.new())
 	ECS.world.finalize_system_setup() 
 
 func setup_entities(): 
 	setup_inventory(player)
 
-func setup_inventory(_player):
+func setup_inventory(_player): 
 	# 测试加物品
 	var queue = _player.get_component(C_InventoryCommandQueue)
 	var cmd = AddItemCommand.new()
@@ -60,6 +63,9 @@ func setup_inventory(_player):
 	new_cmd.amount = 3
 
 	queue.commands.append(new_cmd)
+
+	for chest in chests: 
+		chest.add_init_items()
 
 func _send_attack() -> void:
 	var dmg = C_Damage.new()

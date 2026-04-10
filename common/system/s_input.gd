@@ -12,6 +12,8 @@ func process(entities: Array[Entity], _components: Array, _delta: float) -> void
 		c_input.down = Input.is_action_pressed("move_down")
 		c_input.left = Input.is_action_pressed("move_left")
 		c_input.right = Input.is_action_pressed("move_right")
+		c_input.interact = Input.is_action_just_pressed("interact")
 		
 		c_input.ui_inventory_visible = Input.is_action_just_released("ui_inventory")
-		c_input.cast_fireball = Input.is_action_just_pressed("ability_fireball")
+
+		c_input.ui_open_chest_visible = Input.is_action_just_released("ui_openbox")

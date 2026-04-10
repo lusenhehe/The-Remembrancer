@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://duff4u3gaiur6"]
+
+[ext_resource type="Script" uid="uid://ki04jmxk8skg" path="res://src/entities/e_chest.gd" id="1_yw3yy"]
+[ext_resource type="Script" uid="uid://b6k13gc2m4e5s" path="res://addons/gecs/ecs/component.gd" id="2_52d8q"]
+[ext_resource type="Texture2D" uid="uid://e25shmqriiuc" path="res://assets/ui/icons/icon_items.png" id="2_xb5wj"]
+[ext_resource type="Script" uid="uid://dxwat1nu3cekx" path="res://common/component/c_interactable.gd" id="3_ioh3r"]
+[ext_resource type="InventoryDatabase" uid="uid://de5qy8ycey7yn" path="res://assets/data/database.tres" id="3_v0vkv"]
+
+[sub_resource type="Resource" id="Resource_nover"]
+script = ExtResource("3_ioh3r")
+metadata/_custom_type_script = "uid://dxwat1nu3cekx"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rj3i"]
+size = Vector2(70, 53.5)
+
+[node name="ChestEntity" type="Node" unique_id=310252050 node_paths=PackedStringArray("inventory", "interact_area", "target_node")]
+script = ExtResource("1_yw3yy")
+inventory = NodePath("1/GridInventory")
+interact_area = NodePath("1/Area2D")
+target_node = NodePath("1/Label")
+component_resources = Array[ExtResource("2_52d8q")]([SubResource("Resource_nover")])
+metadata/_custom_type_script = "uid://ki04jmxk8skg"
+
+[node name="1" type="Node2D" parent="." unique_id=1374368265]
+
+[node name="GridInventory" type="GridInventory" parent="1" unique_id=2000309627]
+database = ExtResource("3_v0vkv")
+
+[node name="Sprite2D" type="Sprite2D" parent="1" unique_id=749921647]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_xb5wj")
+
+[node name="Area2D" type="Area2D" parent="1" unique_id=76852239]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="1/Area2D" unique_id=23336840]
+position = Vector2(0, -7.75)
+shape = SubResource("RectangleShape2D_3rj3i")
+
+[node name="Label" type="Label" parent="1" unique_id=1647431544]
+offset_left = -36.0
+offset_top = -42.0
+offset_right = 37.0
+offset_bottom = -19.0
+text = "按下E打开"
